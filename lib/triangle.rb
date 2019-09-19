@@ -22,10 +22,9 @@ class Triangle
 
   def valid?
     valid = [(a + b > c), (a + c > b), (b + c > a)]
-    @sides.each { |side| valid << false if side <= 0 }
-    raise TriangleError if
-      valid.include?(false)
-    end
+    @sides.each {|side| valid << false if side <= 0 }
+    raise TriangleError if valid.include?(false)
+  end
 
   class TriangleError < StandardError
   end
