@@ -2,60 +2,62 @@ require 'pry-moves'
 
 class Triangle
 
-  attr_accessor :side_1, :side_2, :side_3
+  attr_accessor :sides
 
   def initialize(side_1, side_2, side_3)
-    @side_1 = side_1
-    @side_2 = side_2
-    @side_3 = side_3
+    @sides = [side_1, side_2, side_3]
   end
 
   def kind
 
-    if self.equilateral?
-      :equilateral
-    elsif self.isosceles?
-      :isosceles
-    elsif self.scalene?
-      :scalene
-    else
-      puts "Triangle Error"
-    end
+    raise TriangleError if !sides.select {|side| side <= 0}.empty?
 
+    raise TriangleError if !inequality?
+
+    if sides.sum > 0 && sides.all?(&:positive?)
+
+      if sides[0] == sides[1] && sides[1] == sides[2]
+        :equilateral
+      elsif (sides[0] == sides[1]) || (sides[1] == sides[2]) || (sides[0] == sides[2])
+        :isosceles
+      elsif sides[0] != sides[1] && sides[1] != sides[2] && sides[0] != sides[2]
+        :scalene
+      end
+
+    end
 
   end
 
-  def equilateral?
-    if @side_1 == @side_2 && @side_2 == @side_3
+
+  # check triangle inequality here
+  def inequality?
+    hypotenuse = @sides.max
+    sum_of_other_sides = 0
+
+    other_sides = @sides.reject {|side| side == hypotenuse}
+
+    # other_sides = [@side_1, @side_2, @side_3].select do |side|
+    #   side != hypotenuse
+    # end
+
+    # fix for when there is another side equal to the hypotenuse EX. [10,10,4]
+    if other_sides.count == 2
+      sum_of_other_sides = other_sides[0] + other_sides[1]
+    elsif other_sides.count == 1
+      sum_of_other_sides = other_sides[0] + hypotenuse
+    end
+
+    # if passes inequality or all sides are equal then return true else return false
+    if sum_of_other_sides > hypotenuse 
       true
     else
       false
     end
-  end
-
-  def isosceles?
-    if @side_1 == @side_2 || @side_1 == @side_3 || @side_2 == @side_3
-      true
-    else
-      false
-    end
-  end
-
-  def scalene?
-    if @side_1 != @side_2 && @side_2 != @side_3
-      true
-    else
-      false
-    end
-  end
-
-
-  class TriangleError < StandardError
-
-    def message
-      "** Triangle Error: Custom error thrown! **"
-    end
 
   end
+
+
+
+  class TriangleError < StandardError; end
 
 end
