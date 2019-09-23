@@ -12,7 +12,7 @@ class Triangle
 
     raise TriangleError if !sides.select {|side| side <= 0}.empty?
 
-    raise TriangleError if !inequality?
+    raise TriangleError if !check_inequality?
 
     if sides.sum > 0 && sides.all?(&:positive?)
 
@@ -30,15 +30,11 @@ class Triangle
 
 
   # check triangle inequality here
-  def inequality?
+  def check_inequality?
     hypotenuse = @sides.max
     sum_of_other_sides = 0
 
     other_sides = @sides.reject {|side| side == hypotenuse}
-
-    # other_sides = [@side_1, @side_2, @side_3].select do |side|
-    #   side != hypotenuse
-    # end
 
     # fix for when there is another side equal to the hypotenuse EX. [10,10,4]
     if other_sides.count == 2
@@ -48,7 +44,7 @@ class Triangle
     end
 
     # if passes inequality or all sides are equal then return true else return false
-    if sum_of_other_sides > hypotenuse 
+    if sum_of_other_sides > hypotenuse
       true
     else
       false
