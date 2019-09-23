@@ -31,20 +31,20 @@ class Triangle
 
   # check triangle inequality here
   def check_inequality?
-    hypotenuse = @sides.max
+    max_side = @sides.max
     sum_of_other_sides = 0
 
-    other_sides = @sides.reject {|side| side == hypotenuse}
+    other_sides = @sides.reject {|side| side == max_side}
 
-    # fix for when there is another side equal to the hypotenuse EX. [10,10,4]
+    # fix for when there is another side equal to the max_side EX. [10,10,4]
     if other_sides.count == 2
       sum_of_other_sides = other_sides[0] + other_sides[1]
     elsif other_sides.count == 1
-      sum_of_other_sides = other_sides[0] + hypotenuse
+      sum_of_other_sides = other_sides[0] + max_side
     end
 
     # if passes inequality or all sides are equal then return true else return false
-    if sum_of_other_sides > hypotenuse
+    if sum_of_other_sides > max_side || @sides.select
       true
     else
       false
