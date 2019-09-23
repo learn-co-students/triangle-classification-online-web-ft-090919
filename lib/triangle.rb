@@ -44,7 +44,7 @@ class Triangle
     end
 
     # if passes inequality or all sides are equal then return true else return false
-    if sum_of_other_sides > max_side || @sides.select
+    if sum_of_other_sides > max_side 
       true
     else
       false
